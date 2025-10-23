@@ -1,7 +1,11 @@
 package com.example.calling_card.controllers;
 
+import com.example.calling_card.models.Users;
+import com.example.calling_card.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
