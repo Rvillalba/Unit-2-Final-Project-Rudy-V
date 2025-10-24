@@ -37,8 +37,9 @@ public class UsersController {
             user.setEmail(userDetails.getEmail());
             user.setPhoneNumber(userDetails.getPhoneNumber());
             return usersRepository.save(user);
+        } else {
+            return null;
         }
-        return null;
     }
 
     @DeleteMapping ("/delete/{id}")

@@ -24,7 +24,7 @@ public class SavedCardsController {
         return savedCardsRepository.findById(id).orElse(null);
     }
 
-    @PostMapping ("")
+    @PostMapping ("/add")
     public SavedCards createCard(@RequestBody SavedCards savedCards) {
         return savedCardsRepository.save(savedCards);
     }
@@ -41,5 +41,10 @@ public class SavedCardsController {
         } else {
             return null;
         }
+    }
+
+    @DeleteMapping ("/delete/{id}")
+    public void deleteUser(@PathVariable int id) {
+        savedCardsRepository.deleteById(id);
     }
 }
