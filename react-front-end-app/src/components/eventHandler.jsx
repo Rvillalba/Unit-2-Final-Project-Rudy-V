@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const eventHandler = () => {
+const useEventHandler = () => {
     const [formData, setFormData] = useState({
         name:"",
         phone:"",
@@ -29,4 +29,4 @@ const eventHandler = () => {
         return {formData, handleChange, clearInput}
 }
 
-export default eventHandler
+export default useEventHandler

@@ -1,13 +1,13 @@
 import { useParams } from "react-router-dom";
 import CardPreview from "./CardPreview";
 import Button from "./Button";
-import eventHandler from "./eventHandler";
+import useEventHandler from "./eventHandler";
 
 const CardCreate = () => {
     
     const { create }=useParams();
     /*This part of the code uses the eventHandler component*/
-    const {formData, handleChange, clearInput} = eventHandler();
+    const {formData, handleChange, clearInput} = useEventHandler();
     /*This code checks the values of the input fields. This part is important
     to disable the download button if there is a blank field*/
     const emptyFields = Object.values(formData).every(value => value.trim() === "");
