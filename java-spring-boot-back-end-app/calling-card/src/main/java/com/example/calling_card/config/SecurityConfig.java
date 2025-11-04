@@ -1,5 +1,7 @@
 package com.example.calling_card.config;
 
+import com.example.calling_card.filters.JwtAuthenticationFilter;
+import com.example.calling_card.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
