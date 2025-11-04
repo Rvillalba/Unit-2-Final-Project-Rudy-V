@@ -1,46 +1,70 @@
 package com.example.calling_card.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
+
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Table(name = "users")
 @Entity
-public class Users {
+public class Users implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String name;
-    private String email;
-    private String phoneNumber;
 
-    public Users(){
-            }
-    // Getters and Setters
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
-    public String getName() {
-        return name;
+    @Column(unique = true)
+    String email;
+    String password;
+    LocalDateTime createdAt;
+    LocalDateTime updatedAt;
 
+    @Enumerated(EnumType.STRING)
+    Role role;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
-    public void setName(String name) {
-        this.name = name;
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
-    public String getEmail() {
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public String getPassword() {
+        return "";
+    }
+
+    @Override
+    public String getUsername() {
         return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 }
