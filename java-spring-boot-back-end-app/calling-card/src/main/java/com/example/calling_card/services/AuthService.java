@@ -1,5 +1,6 @@
 package com.example.calling_card.services;
 
+import com.example.calling_card.dto.JwtAuthenticationResponse;
 import com.example.calling_card.models.Role;
 import com.example.calling_card.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
