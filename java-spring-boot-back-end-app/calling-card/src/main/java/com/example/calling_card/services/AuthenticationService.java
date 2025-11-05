@@ -1,10 +1,13 @@
 package com.example.calling_card.services;
 
 import com.example.calling_card.dto.JwtAuthenticationResponse;
+import com.example.calling_card.dto.SignInRequest;
+import com.example.calling_card.dto.SignUpRequest;
 import com.example.calling_card.models.Role;
+import com.example.calling_card.models.User;
 import com.example.calling_card.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -1,18 +1,21 @@
 package com.example.calling_card.services;
 
-import com.example.calling_card.repositories.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
+import java.time.LocalDateTime;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import com.example.calling_card.models.User;
+import com.example.calling_card.repositories.UserRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
     private final UserRepository userRepository;
 
     public UserDetailsService userDetailsService() {
@@ -33,4 +36,5 @@ public class UserService {
         newUser.setUpdatedAt(LocalDateTime.now());
         return userRepository.save(newUser);
     }
+
 }

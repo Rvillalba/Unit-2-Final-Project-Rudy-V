@@ -20,7 +20,7 @@ public class SavedCardsController {
     }
 
     @GetMapping("/{id}")
-    public SavedCards getCardById(@PathVariable Integer id) {
+    public SavedCards getCardById(@PathVariable Long id) {
         return savedCardsRepository.findById(id).orElse(null);
     }
 
@@ -30,7 +30,7 @@ public class SavedCardsController {
     }
 
     @PutMapping ("/{id}")
-    public SavedCards updateCard(@PathVariable Integer id, @RequestBody SavedCards cardDetails) {
+    public SavedCards updateCard(@PathVariable Long id, @RequestBody SavedCards cardDetails) {
         SavedCards savedCard = savedCardsRepository.findById(id).orElse(null);
         if (savedCard != null) {
             savedCard.setCardId(cardDetails.getCardId());
@@ -44,7 +44,7 @@ public class SavedCardsController {
     }
 
     @DeleteMapping ("/delete/{id}")
-    public void deleteUser(@PathVariable int id) {
+    public void deleteUser(@PathVariable Long id) {
         savedCardsRepository.deleteById(id);
     }
 }
