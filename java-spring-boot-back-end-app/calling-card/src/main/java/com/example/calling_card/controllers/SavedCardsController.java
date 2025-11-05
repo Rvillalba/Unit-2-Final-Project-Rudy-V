@@ -2,8 +2,12 @@ package com.example.calling_card.controllers;
 
 import com.example.calling_card.models.SavedCards;
 import com.example.calling_card.repositories.SavedCardsRepository;
+import com.example.calling_card.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 
 import java.util.List;
 
@@ -14,37 +18,59 @@ public class SavedCardsController {
     @Autowired
     private SavedCardsRepository savedCardsRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    private Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"))
+                .getId();
+    }
+
     @GetMapping("/all")
     public List<SavedCards> getAllSavedCards() {
-        return savedCardsRepository.findAll();
+        Long userId = getCurrentUserId();
+        return savedCardsRepository.findByUserId(userId);
     }
 
     @GetMapping("/{id}")
     public SavedCards getCardById(@PathVariable Long id) {
-        return savedCardsRepository.findById(id).orElse(null);
+        Long userId = getCurrentUserId();
+        return savedCardsRepository.findById(id)
+                .filter(card -> card.getUserId()
+                .equals(userId)).orElse(null);
     }
 
     @PostMapping ("/add")
     public SavedCards createCard(@RequestBody SavedCards savedCards) {
+        savedCards.setUserId(getCurrentUserId());
         return savedCardsRepository.save(savedCards);
     }
 
     @PutMapping ("/{id}")
     public SavedCards updateCard(@PathVariable Long id, @RequestBody SavedCards cardDetails) {
-        SavedCards savedCard = savedCardsRepository.findById(id).orElse(null);
-        if (savedCard != null) {
-            savedCard.setCardId(cardDetails.getCardId());
-            savedCard.setName(cardDetails.getName());
-            savedCard.setEmail(cardDetails.getEmail());
-            savedCard.setPhoneNumber(cardDetails.getPhoneNumber());
-            return savedCardsRepository.save(savedCard);
-        } else {
-            return null;
-        }
+        Long userId = getCurrentUserId();
+       return savedCardsRepository.findById(id)
+               .filter(card -> card.getUserId().equals(userId))
+               .map(savedCards -> {
+                   savedCards.setCardId(cardDetails.getCardId());
+                   savedCards.setName(cardDetails.getName());
+                   savedCards.setEmail(cardDetails.getEmail());
+                   savedCards.setPhoneNumber(cardDetails.getPhoneNumber());
+                   return savedCardsRepository.save(savedCards);
+               })
+               .orElse(null);
     }
 
     @DeleteMapping ("/delete/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        savedCardsRepository.deleteById(id);
+    public void deleteCard(@PathVariable Long id) {
+        Long userId = getCurrentUserId();
+        savedCardsRepository.findById(id)
+                .filter(card -> card.getUserId().equals(userId))
+                .ifPresent (savedCardsRepository::delete);
     }
-}
+
+    }
+
