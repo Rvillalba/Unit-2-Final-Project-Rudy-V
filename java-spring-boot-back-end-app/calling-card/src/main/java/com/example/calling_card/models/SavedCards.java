@@ -11,8 +11,8 @@ public class SavedCards {
 
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
-    private int id;
-    private int cardId;
+    private Long id;
+    private Long cardId;
     private String name;
     private String email;
     private String phoneNumber;
