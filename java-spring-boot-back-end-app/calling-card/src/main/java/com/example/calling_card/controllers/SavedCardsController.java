@@ -24,7 +24,7 @@ public class SavedCardsController {
     private Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        return userRepository.findByUsername(username)
+        return userRepository.findByEmail(username)
                 .orElseThrow(() -> new RuntimeException("User not found"))
                 .getId();
     }
@@ -39,13 +39,13 @@ public class SavedCardsController {
     public SavedCards getCardById(@PathVariable Long id) {
         Long userId = getCurrentUserId();
         return savedCardsRepository.findById(id)
-                .filter(card -> card.getUserId()
+                .filter(card -> card.getId()
                 .equals(userId)).orElse(null);
     }
 
     @PostMapping ("/add")
     public SavedCards createCard(@RequestBody SavedCards savedCards) {
-        savedCards.setUserId(getCurrentUserId());
+        savedCards.setId(getCurrentUserId());
         return savedCardsRepository.save(savedCards);
     }
 
@@ -53,7 +53,7 @@ public class SavedCardsController {
     public SavedCards updateCard(@PathVariable Long id, @RequestBody SavedCards cardDetails) {
         Long userId = getCurrentUserId();
        return savedCardsRepository.findById(id)
-               .filter(card -> card.getUserId().equals(userId))
+               .filter(card -> card.getId().equals(userId))
                .map(savedCards -> {
                    savedCards.setCardId(cardDetails.getCardId());
                    savedCards.setName(cardDetails.getName());
@@ -68,9 +68,9 @@ public class SavedCardsController {
     public void deleteCard(@PathVariable Long id) {
         Long userId = getCurrentUserId();
         savedCardsRepository.findById(id)
-                .filter(card -> card.getUserId().equals(userId))
+                .filter(card -> card.getId().equals(userId))
                 .ifPresent (savedCardsRepository::delete);
     }
 
-    }
+}
 

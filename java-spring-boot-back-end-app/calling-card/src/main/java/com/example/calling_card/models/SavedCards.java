@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
+
+
 @Entity
 public class SavedCards {
 
@@ -19,18 +21,19 @@ public class SavedCards {
     }
 
     // Getters and Setters
-    public int getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
-    public int getCardId() {
+    public Long getCardId() {
         return cardId;
     }
-    public void setCardId(int cardId) {
+    public void setCardId(Long cardId) {
         this.cardId = cardId;
     }
+
     public String getName() {
         return name;
     }
