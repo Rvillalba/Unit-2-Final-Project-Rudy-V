@@ -36,7 +36,6 @@ public class SavedCardsController {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         SavedCards savedCard = new SavedCards();
-        savedCard.setCardId(request.cardId);
         savedCard.setName(request.name);
         savedCard.setEmail(request.email);
         savedCard.setPhoneNumber(request.phoneNumber);
@@ -49,7 +48,6 @@ public class SavedCardsController {
     public SavedCards updateCard(@PathVariable Integer id, @RequestBody SavedCardRequest request) {
         SavedCards savedCard = savedCardsRepository.findById(id).orElse(null);
         if (savedCard != null) {
-            savedCard.setCardId(request.cardId);
             savedCard.setName(request.name);
             savedCard.setEmail(request.email);
             savedCard.setPhoneNumber(request.phoneNumber);

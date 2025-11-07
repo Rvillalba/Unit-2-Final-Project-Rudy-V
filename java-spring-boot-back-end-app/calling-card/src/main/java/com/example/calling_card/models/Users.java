@@ -1,8 +1,9 @@
 package com.example.calling_card.models;
 
+
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Entity
@@ -15,8 +16,8 @@ public class Users {
     private String email;
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<SavedCards> savedCards = new ArrayList<>();
+    @OneToMany(mappedBy = "user")
+    private List<SavedCards> savedCards;
 
     public Users() {
     }

@@ -1,5 +1,6 @@
 package com.example.calling_card.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,13 +9,13 @@ public class SavedCards {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private int id;
-    private int cardId;
     private String name;
     private String email;
     private String phoneNumber;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
     private Users user;
 
     public SavedCards() {
@@ -27,12 +28,7 @@ public class SavedCards {
     public void setId(int id) {
         this.id = id;
     }
-    public int getCardId() {
-        return cardId;
-    }
-    public void setCardId(int cardId) {
-        this.cardId = cardId;
-    }
+
     public String getName() {
         return name;
     }
