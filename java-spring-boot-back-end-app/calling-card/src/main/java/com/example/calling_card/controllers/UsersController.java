@@ -1,6 +1,8 @@
 package com.example.calling_card.controllers;
 
+import com.example.calling_card.models.SavedCards;
 import com.example.calling_card.models.Users;
+import com.example.calling_card.repositories.SavedCardsRepository;
 import com.example.calling_card.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +16,10 @@ public class UsersController {
     @Autowired
     private UsersRepository usersRepository;
 
-    @GetMapping ("/all")
+    @Autowired
+    private SavedCardsRepository savedCardsRepository;
+
+    @GetMapping
     public List<Users> getAllUsers() {
         return usersRepository.findAll();
     }
@@ -22,6 +27,12 @@ public class UsersController {
     @GetMapping ("{id}")
     public Users getUserById(@PathVariable int id) {
         return usersRepository.findById(id).orElse(null);
+    }
+
+    @GetMapping ("{id}/cards")
+    public List <SavedCards> getUserCards(@PathVariable int id) {
+
+        return savedCardsRepository.findByUserId(id);
     }
 
     @PostMapping ("/add")
