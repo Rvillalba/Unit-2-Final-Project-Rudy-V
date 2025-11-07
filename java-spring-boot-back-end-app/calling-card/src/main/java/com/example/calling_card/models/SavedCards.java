@@ -1,8 +1,6 @@
 package com.example.calling_card.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class SavedCards {
@@ -14,6 +12,10 @@ public class SavedCards {
     private String name;
     private String email;
     private String phoneNumber;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private Users user;
 
     public SavedCards() {
     }
@@ -48,6 +50,13 @@ public class SavedCards {
     }
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Users getUser() {
+        return user;
+    }
+    public void setUser(Users user) {
+        this.user = user;
     }
 
 }
