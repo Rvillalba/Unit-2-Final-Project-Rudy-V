@@ -7,10 +7,13 @@ public class SavedCardDTO {
     @NotNull(message = "User ID is required")
     private Integer userId;
 
+    private String name;
+    private String email;
+    private String phoneNumber;
+
     public SavedCardDTO() {
 
     }
-    private CardData cardData;
 
     public SavedCardDTO(Integer userId, String name, String email, String phoneNumber) {
         this.userId = userId;
