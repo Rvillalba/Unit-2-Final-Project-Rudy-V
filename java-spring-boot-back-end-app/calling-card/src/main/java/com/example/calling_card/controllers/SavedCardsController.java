@@ -1,5 +1,6 @@
 package com.example.calling_card.controllers;
 
+import com.example.calling_card.dto.request.SavedCardDTO;
 import com.example.calling_card.models.SavedCards;
 import com.example.calling_card.models.Users;
 import com.example.calling_card.repositories.SavedCardsRepository;
@@ -39,7 +40,7 @@ public class SavedCardsController {
     }
 
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> addCard(@RequestBody SavedCardRequest cardData) {
+    public ResponseEntity<?> addCard(@RequestBody SavedCardDTO cardData) {
         Users user = usersRepository.findById(cardData.getUserId()).orElse(null);
         if (user != null) {
             SavedCards newCard = new SavedCards(cardData.getName(), cardData.getEmail(),
@@ -53,7 +54,7 @@ public class SavedCardsController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateCard(@PathVariable int id, @RequestBody SavedCardRequest cardData) {
+    public ResponseEntity<?> updateCard(@PathVariable int id, @RequestBody SavedCardDTO cardData) {
         SavedCards existingCard = savedCardsRepository.findById(id).orElse(null);
         if (existingCard != null) {
             existingCard.setName(cardData.getName());
