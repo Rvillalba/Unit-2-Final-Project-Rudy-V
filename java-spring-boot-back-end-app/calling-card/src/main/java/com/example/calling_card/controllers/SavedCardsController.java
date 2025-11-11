@@ -2,9 +2,6 @@ package com.example.calling_card.controllers;
 
 import com.example.calling_card.dto.SavedCardRequest;
 import com.example.calling_card.models.SavedCards;
-import com.example.calling_card.models.Users;
-import com.example.calling_card.repositories.SavedCardsRepository;
-import com.example.calling_card.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,50 +12,35 @@ import java.util.List;
 public class SavedCardsController {
 
     @Autowired
-    private SavedCardsRepository savedCardsRepository;
-
-    @Autowired
-    private UsersRepository usersRepository;
+    private SavedCardsService savedCardsService;
 
     @GetMapping("/all")
     public List<SavedCards> getAllSavedCards() {
-        return savedCardsRepository.findAll();
+        return savedCardsService.getAllSavedCards();
     }
 
     @GetMapping("/{id}")
     public SavedCards getCardById(@PathVariable Integer id) {
-        return savedCardsRepository.findById(id).orElse(null);
+        return savedCardsService.getCardById(id);
     }
 
-    @PostMapping ("/add")
+    @GetMapping("/user/{userId}")
+    public List<SavedCards> getCardsByUserId(@PathVariable Integer userId) {
+        return savedCardsService.getCardsByUserId(userId);
+    }
+
+    @PostMapping("/add")
     public SavedCards createCard(@RequestBody SavedCardRequest request) {
-        Users user = usersRepository.findById(request.userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        SavedCards savedCard = new SavedCards();
-        savedCard.setName(request.name);
-        savedCard.setEmail(request.email);
-        savedCard.setPhoneNumber(request.phoneNumber);
-        savedCard.setUser(user);
-
-        return savedCardsRepository.save(savedCard);
+        return savedCardsService.createCard(request);
     }
 
-    @PutMapping ("/{id}")
+    @PutMapping("/{id}")
     public SavedCards updateCard(@PathVariable Integer id, @RequestBody SavedCardRequest request) {
-        SavedCards savedCard = savedCardsRepository.findById(id).orElse(null);
-        if (savedCard != null) {
-            savedCard.setName(request.name);
-            savedCard.setEmail(request.email);
-            savedCard.setPhoneNumber(request.phoneNumber);
-            return savedCardsRepository.save(savedCard);
-        } else {
-            return null;
-        }
+        return savedCardsService.updateCard(id, request);
     }
 
-    @DeleteMapping ("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteCard(@PathVariable int id) {
-        savedCardsRepository.deleteById(id);
+        savedCardsService.deleteCard(id);
     }
 }

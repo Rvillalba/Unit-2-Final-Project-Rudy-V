@@ -1,14 +1,13 @@
 package com.example.calling_card.controllers;
 
 import com.example.calling_card.dto.SavedCardRequest;
-import com.example.calling_card.models.SavedCards;
 import com.example.calling_card.models.Users;
 import com.example.calling_card.repositories.SavedCardsRepository;
 import com.example.calling_card.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 @RestController
@@ -33,21 +32,19 @@ public class UsersController {
 
     @GetMapping("/{id}/cards")
     public List<SavedCardRequest> getUserCards(@PathVariable int id) {
-        List<SavedCards> cards = savedCardsRepository.findByUserId(id);
-        List<SavedCardRequest> response = new ArrayList<>();
-
-        for (SavedCards card : cards) {
-            SavedCardRequest dto = new SavedCardRequest();
-            dto.id = card.getId();
-            dto.name = card.getName();
-            dto.email = card.getEmail();
-            dto.phoneNumber = card.getPhoneNumber();
-            dto.userId = card.getUser().getId(); // just the ID
-            response.add(dto);
-        }
-
-        return response;
+        return savedCardsRepository.findByUserId(id)
+                .stream()
+                .map(card -> {
+                    SavedCardRequest dto = new SavedCardRequest();
+                    dto.name = card.getName();
+                    dto.email = card.getEmail();
+                    dto.phoneNumber = card.getPhoneNumber();
+                    dto.userId = card.getUser().getId();
+                    return dto;
+                })
+                .toList();
     }
+
 
 
     @PostMapping ("/add")
