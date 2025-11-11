@@ -74,6 +74,30 @@ body {
   border-radius: 10px;
   transition: background 300ms, box-shadow 300ms;
 }
+#submit-btn {
+  display: flex;
+  justify-content: center;
+  width: 350px;
+  height: 40px;
+  background-color: #000000;
+  color: #FFFFFF;
+  float: center;
+  padding: 5px;
+  border-radius: 10px;
+  transition: background 300ms, box-shadow 300ms;
+}
+#clear-btn {
+  display: flex;
+  justify-content: center;
+  width: 350px;
+  height: 40px;
+  background-color: #000000;
+  color: #FFFFFF;
+  float: center;
+  padding: 5px;
+  border-radius: 10px;
+  transition: background 300ms, box-shadow 300ms;
+}
 #btn:disabled {
   background-color: #ccc;
   color: #666;
