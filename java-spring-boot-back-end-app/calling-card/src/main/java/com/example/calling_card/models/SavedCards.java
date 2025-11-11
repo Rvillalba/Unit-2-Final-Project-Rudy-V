@@ -1,21 +1,36 @@
 package com.example.calling_card.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class SavedCards {
 
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int cardId;
     private String name;
     private String email;
     private String phoneNumber;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
+    private Users user;
+
     public SavedCards() {
+    }
+
+    public SavedCards(String name, String email, String phoneNumber, Users user) {
+        this.name = name;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.user = user;
     }
 
     // Getters and Setters
@@ -25,12 +40,7 @@ public class SavedCards {
     public void setId(int id) {
         this.id = id;
     }
-    public int getCardId() {
-        return cardId;
-    }
-    public void setCardId(int cardId) {
-        this.cardId = cardId;
-    }
+
     public String getName() {
         return name;
     }
@@ -48,6 +58,31 @@ public class SavedCards {
     }
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Users getUser() {
+        return user;
+    }
+    public void setUser(Users user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return name + " (" + email + ")";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SavedCards that = (SavedCards) o;
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
 }
