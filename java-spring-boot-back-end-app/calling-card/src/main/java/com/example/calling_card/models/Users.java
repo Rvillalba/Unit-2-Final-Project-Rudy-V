@@ -1,9 +1,11 @@
 package com.example.calling_card.models;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,14 +16,18 @@ public class Users {
     private int id;
     private String name;
     private String email;
-    private String phoneNumber;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<SavedCards> savedCards;
 
     public Users() {
     }
 
+    public Users(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
     // Getters and Setters
     public int getId() {
         return id;
@@ -48,20 +54,21 @@ public class Users {
         this.email = email;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
     public List<SavedCards> getSavedCards() {
         return savedCards;
     }
 
-    public void setSavedCards(List<SavedCards> savedCards) {
-        this.savedCards = savedCards;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Users users = (Users) o;
+        return id == users.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id);
     }
 
 
