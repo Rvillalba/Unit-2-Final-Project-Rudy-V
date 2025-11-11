@@ -1,7 +1,5 @@
 package com.example.calling_card.services;
 
-import com.example.calling_card.dto.SavedCardRequest;
-import com.example.calling_card.dto.UserRequest;
 import com.example.calling_card.models.SavedCards;
 import com.example.calling_card.models.Users;
 import com.example.calling_card.repositories.SavedCardsRepository;

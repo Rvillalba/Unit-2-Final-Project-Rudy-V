@@ -1,11 +1,9 @@
 package com.example.calling_card.controllers;
 
-import com.example.calling_card.dto.SavedCardRequest;
-import com.example.calling_card.dto.UserRequest;
+import com.example.calling_card.dto.request.UserDTO;
 import com.example.calling_card.models.Users;
 import com.example.calling_card.repositories.SavedCardsRepository;
 import com.example.calling_card.repositories.UsersRepository;
-import com.example.calling_card.services.UsersService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,14 +51,14 @@ public class UsersController {
     }
 
     @PostMapping (value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> addUser(@Valid @RequestBody UserRequest userData) {
+    public ResponseEntity<?> addUser(@Valid @RequestBody UserDTO userData) {
         Users user = new Users(userData.getName(), userData.getEmail());
         usersRepository.save(user);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateUser(@PathVariable int id, @Valid @RequestBody UserRequest userData) {
+    public ResponseEntity<?> updateUser(@PathVariable int id, @Valid @RequestBody UserDTO userData) {
         Users existingUser = usersRepository.findById(id).orElse(null);
         if (existingUser != null) {
             existingUser.setName(userData.getName());

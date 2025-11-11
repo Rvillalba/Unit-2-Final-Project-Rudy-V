@@ -1,6 +1,5 @@
 package com.example.calling_card.controllers;
 
-import com.example.calling_card.dto.SavedCardRequest;
 import com.example.calling_card.models.SavedCards;
 import com.example.calling_card.models.Users;
 import com.example.calling_card.repositories.SavedCardsRepository;
@@ -11,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.Media;
 import java.util.List;
 
 @RestController
