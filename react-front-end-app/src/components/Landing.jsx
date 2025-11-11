@@ -10,7 +10,7 @@ const Landing = () => {
                     <div>
                         {/*The main part of this page is the get started button that links directly to the create page*/}
                         <Link to="/create">
-                            <Button id="btn" label="Start Creating"  />
+                            <Button id="btn" label="Create User"  />
                         </Link>  
                     </div>
             </main>
@@ -20,4 +20,3 @@ const Landing = () => {
 
 export default Landing
 
-//
