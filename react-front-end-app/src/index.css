@@ -99,8 +99,8 @@ body {
   transition: background 300ms, box-shadow 300ms;
 }
 #btn:disabled {
+  opacity: 0.5;
   background-color: #ccc;
-  color: #666;
   cursor: not-allowed;
 }
 #nav {

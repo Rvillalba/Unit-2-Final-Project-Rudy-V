@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import FormComponent from "./Form";
-import eventHandler from "./eventHandler";
 
 const Landing = () => {
+    
     const [formData, setFormData] = useState({ name: '', email: ''});
     const navigate = useNavigate();
 
@@ -13,6 +13,14 @@ const Landing = () => {
             navigate('/create');
         }
     }, [navigate]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -53,7 +61,7 @@ const isDisabled = !formData.name.trim() || !formData.email.trim();
         <FormComponent
             fields={userForm}
             formData={formData}
-            handleChange={eventHandler}
+            handleChange={handleChange}
             onSubmit={handleSubmit}
             submitLabel="Create User"
             isDisabled={isDisabled}

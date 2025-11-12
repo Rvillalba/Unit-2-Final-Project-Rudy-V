@@ -35,7 +35,7 @@ const FormComponent = ({
                     id="submit-btn"
                     label={submitLabel}
                     type="submit"
-                    disbaled={isDisabled}
+                    disabled={isDisabled}
                     />
                 {showClearButton && (
                     <Button

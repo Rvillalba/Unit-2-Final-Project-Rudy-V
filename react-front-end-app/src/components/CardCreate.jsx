@@ -29,13 +29,13 @@ const CardCreate = () => {
                 fields={cardFields}
                 formData={formData}
                 handleChange={handleChange}
-                onSubmmit={handleSubmit}
-                submitLable="Create Card"
+                onSubmit={handleSubmit}
+                submitLabel="Create Card"
                 showClearButton={true}
                 onClear={clearInput}
                 isDisabled={emptyFields}
                 />
-                
+
                 <CardPreview data={formData} isDisabled={emptyFields}/>
             </div>
         </div>
