@@ -25,6 +25,7 @@ const CardCreate = () => {
     to disable the download button if there is a blank field*/
     const emptyFields = Object.values(formData).every(value => value.trim() === "");
 
+    /*Saves card to database*/
     const handleSavedCard = async () => {
         if (!userId) {
             setSavedMessage('Please create a user account first');
@@ -32,13 +33,13 @@ const CardCreate = () => {
         }
 
         try {
-            const response = await fetch ('/saved-cards/add', {
+            const response = await fetch ('http://localhost:8080/saved-cards/add', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    userId: userId,
+                    cardId: userId,
                     name: formData.name,
-                    phone: formData.phone,
+                    phoneNumber: formData.phone,
                     email: formData.email,
                     address1: formData.address1,
                     address2: formData.address2,
