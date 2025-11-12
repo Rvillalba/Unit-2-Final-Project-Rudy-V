@@ -8,6 +8,10 @@ const eventHandler = () => {
         address1:"",
         address2:"",
     });
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+    } 
     /*Handles change in inputs*/
     const handleChange = (e) => {
         const { name, value} = e.target;
@@ -26,7 +30,7 @@ const eventHandler = () => {
         address2:"",
         });
     };
-        return {formData, handleChange, clearInput}
+        return {formData, handleSubmit, handleChange, clearInput}
 }
 
 export default eventHandler

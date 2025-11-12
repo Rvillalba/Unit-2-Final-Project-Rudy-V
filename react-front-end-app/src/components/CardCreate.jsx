@@ -1,33 +1,95 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CardPreview from "./CardPreview";
 import Button from "./Button";
 import eventHandler from "./eventHandler";
+import FormComponent from "./Form";
+import {useState, useEffect } from "react";
 
 const CardCreate = () => {
     
     const { create }=useParams();
     /*This part of the code uses the eventHandler component*/
-    const {formData, handleChange, clearInput} = eventHandler();
+    const navigate = useNavigate();
+    const [userId, setUserId] = useState(null);
+    const [saveMessage, setSavedMessage] = useState('');
+
+    /*Checks for user in storage*/
+    useEffect(() => {
+        const existingUserId = localStorage.getItem('userId');
+        if (existingUserId) {
+            setUserId(existingUserId);
+        }
+    })
+    const {formData, handleSubmit, handleChange, clearInput} = eventHandler();
     /*This code checks the values of the input fields. This part is important
     to disable the download button if there is a blank field*/
     const emptyFields = Object.values(formData).every(value => value.trim() === "");
-    return(       
+
+    /*Saves card to database*/
+    const handleSavedCard = async () => {
+        if (!userId) {
+            setSavedMessage('Please create a user account first');
+            return;
+        }
+
+        try {
+            const response = await fetch ('http://localhost:8080/saved-cards/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    cardId: userId,
+                    name: formData.name,
+                    phoneNumber: formData.phone,
+                    email: formData.email,
+                    address1: formData.address1,
+                    address2: formData.address2,
+                })
+            });
+
+            if (!response.ok) throw new Error('Failed to save card');
+
+            setSavedMessage ('Card saved successfully!');
+            setTimeout(() => setSavedMessage(''), 3000);
+        } catch (error) {
+            setSavedMessage('Error saving card: ' + error.message);
+        }
+    }
+    
+    const cardFields = [
+        {name: "name", type: "text", placeholder: "Name", required: true},
+        { name: "phone", type: "text", placeholder: "Phone Number", required: false },
+        { name: "email", type: "text", placeholder: "E-Mail", required: false },
+        { name: "address1", type: "text", placeholder: "Address Line 1", required: false },
+        { name: "address2", type: "text", placeholder: "Address Line 2", required: false }     
+    ];
+
+    return(
         <div>
-            {/*This is the form used to populate the live preview*/}
             <div id="create-form">
-                <h1 id="create-title">Enter Information Below</h1>            
-                    <form id="form">
-                        <input id="name" type="text" name="name" value={formData.name} onChange={handleChange} required placeholder="Name" /> <br/>
-                        <input id="phone" type="tel" name="phone" value={formData.phone} onChange={handleChange} required placeholder="Phone Number" /> <br/>
-                        <input id="email" type="email" name="email" value={formData.email} onChange={handleChange} required placeholder="E-Mail" /> <br/>
-                        <input id="address1" type="text" name="address1" value={formData.address1} onChange={handleChange} placeholder="Address Line 1" /> <br/>
-                        <input id="address2" type="text" name="address2" value={formData.address2} onChange={handleChange} placeholder="Address Line 2" /> <br/>
-                        <Button id="btn" label="Clear All Fields" onClick={clearInput} />
-                    </form>
-                {/*This is the child component that shows what the card looks like*/}
-                <CardPreview data={formData} isDisabled={emptyFields}/>  
-            </div>
-            <div>
+                <FormComponent
+                title="Enter Information Below"
+                fields={cardFields}
+                formData={formData}
+                handleChange={handleChange}
+                onSubmit={handleSubmit}
+                submitLabel="Create Card"
+                showClearButton={true}
+                onClear={clearInput}
+                isDisabled={emptyFields}
+                />
+
+                <Button
+                    id="saved-card-btn"
+                    label="Save Card"
+                    onClick={handleSavedCard}
+                    disabled={!userId || emptyFields}
+                />
+
+                {!userId && (
+                    <p>Please create a user account to save cards</p>
+                )}
+
+                <CardPreview data={formData} isDisabled={emptyFields}/>
             </div>
         </div>
     )
