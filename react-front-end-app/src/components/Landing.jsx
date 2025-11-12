@@ -7,13 +7,6 @@ const Landing = () => {
     const [formData, setFormData] = useState({ name: '', email: ''});
     const navigate = useNavigate();
 
-    useEffect(() =>{
-        const existingUserId = localStorage.getItem('userId');
-        if (existingUserId) {
-            navigate('/create');
-        }
-    }, [navigate]);
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
