@@ -1,6 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
 import CardPreview from "./CardPreview";
-import Button from "./Button";
 import eventHandler from "./eventHandler";
 import FormComponent from "./Form";
 import {useState, useEffect } from "react";
@@ -11,7 +10,7 @@ const CardCreate = () => {
     /*This part of the code uses the eventHandler component*/
     const navigate = useNavigate();
     const [userId, setUserId] = useState(null);
-    const [saveMessage, setSavedMessage] = useState('');
+    const [saveMessage, setSaveMessage] = useState('');
 
     /*Checks for user in storage*/
     useEffect(() => {
@@ -19,16 +18,20 @@ const CardCreate = () => {
         if (existingUserId) {
             setUserId(existingUserId);
         }
-    })
-    const {formData, handleSubmit, handleChange, clearInput} = eventHandler();
+    }, []);
+
+    const {formData, handleChange, clearInput} = eventHandler();
+
     /*This code checks the values of the input fields. This part is important
     to disable the download button if there is a blank field*/
     const emptyFields = Object.values(formData).every(value => value.trim() === "");
 
     /*Saves card to database*/
-    const handleSavedCard = async () => {
+    const handleSaveCard = async (e) => {
+        e.preventDefault();
+
         if (!userId) {
-            setSavedMessage('Please create a user account first');
+            setSaveMessage('Please create a user account first');
             return;
         }
 
@@ -37,7 +40,7 @@ const CardCreate = () => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    cardId: userId,
+                    userId: parseInt(userId),
                     name: formData.name,
                     phoneNumber: formData.phone,
                     email: formData.email,
@@ -48,12 +51,18 @@ const CardCreate = () => {
 
             if (!response.ok) throw new Error('Failed to save card');
 
-            setSavedMessage ('Card saved successfully!');
-            setTimeout(() => setSavedMessage(''), 3000);
+            const savedCard = await response.json()
+
+            setSaveMessage('Card saved successfully!');
+            setTimeout(() => {
+                setSavedMessage('');
+                clearInput();
+            }, 2000);
         } catch (error) {
-            setSavedMessage('Error saving card: ' + error.message);
+            console.error('Save error:', error);
+            setSaveMessage('Error saving card: ' + error.message);
         }
-    }
+    };  
     
     const cardFields = [
         {name: "name", type: "text", placeholder: "Name", required: true},
@@ -71,19 +80,19 @@ const CardCreate = () => {
                 fields={cardFields}
                 formData={formData}
                 handleChange={handleChange}
-                onSubmit={handleSubmit}
-                submitLabel="Create Card"
+                onSubmit={handleSaveCard}
+                submitLabel="Save Card"
                 showClearButton={true}
                 onClear={clearInput}
-                isDisabled={emptyFields}
+                isDisabled={!userId || emptyFields}
                 />
 
-                <Button
-                    id="saved-card-btn"
-                    label="Save Card"
-                    onClick={handleSavedCard}
-                    disabled={!userId || emptyFields}
-                />
+                    {saveMessage && (
+                    <p>
+                        {saveMessage}
+                    </p> 
+                    )}   
+
 
                 {!userId && (
                     <p>Please create a user account to save cards</p>
