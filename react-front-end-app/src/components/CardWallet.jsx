@@ -213,24 +213,19 @@ const CardWallet = () => {
                                 </div>
                             ) : (
                                 <div>
+                                    {/* Card Preview - Styled like CardPreview component */}
                                     <div 
+                                        id="business-card"
                                         ref={(el) => cardRefs.current[card.id] = el}
-                                        style={{
-                                            padding: '20px',
-                                            backgroundColor: 'white',
-                                            marginBottom: '15px',
-                                            border: '2px solid #333',
-                                            borderRadius: '8px'
-                                        }}
                                     >
-                                        <h3 style={{ margin: '0 0 10px 0' }}>{card.name}</h3>
-                                        <p style={{ margin: '5px 0' }}><strong>Email:</strong> {card.email || 'N/A'}</p>
-                                        <p style={{ margin: '5px 0' }}><strong>Phone:</strong> {card.phoneNumber || 'N/A'}</p>
-                                        {card.address1 && <p style={{ margin: '5px 0' }}><strong>Address:</strong> {card.address1}</p>}
-                                        {card.address2 && <p style={{ margin: '5px 0' }}>{card.address2}</p>}
+                                        <p>{card.name}</p>
+                                        <p>{card.phoneNumber}</p>
+                                        <p>{card.email}</p>
+                                        <p>{card.address1}</p>
+                                        <p>{card.address2}</p>
                                     </div>
                                     
-                                    <div style={{ display: 'flex', gap: '10px' }}>
+                                    <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
                                         <Button
                                             label="Edit"
                                             onClick={() => handleEditClick(card)}
