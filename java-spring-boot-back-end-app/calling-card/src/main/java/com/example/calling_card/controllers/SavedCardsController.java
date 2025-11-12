@@ -60,8 +60,8 @@ public class SavedCardsController {
             existingCard.setName(cardData.getName());
             existingCard.setEmail(cardData.getEmail());
             existingCard.setPhoneNumber(cardData.getPhoneNumber());
-            existingCard.setAddress1(existingCard.getAddress1());
-            existingCard.setAddress2(existingCard.getAddress2());
+            existingCard.setAddress1(cardData.getAddress1());
+            existingCard.setAddress2(cardData.getAddress2());
             savedCardsRepository.save(existingCard);
             return new ResponseEntity<>(existingCard, HttpStatus.OK);
         } else {

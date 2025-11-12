@@ -23,14 +23,12 @@ const CardWallet = () => {
 
     const fetchSavedCards = async (userId) => {
         try {
-            const response = await fetch('http://localhost:8080/saved-cards/all');
+            const response = await fetch('http://localhost:8080/users/${userId}/cards');
             if (!response.ok) throw new Error('Failed to fetch cards');
             
-            const allCards = await response.json();
+            const userCards = await response.json();
+            setSavedCards(usedCards);
 
-            /* Filters cards for this user*/
-            const userCards = allCards.filter(card => card.cardId === userId);
-            setSavedCards(userCards);
         } catch (error) {
             setMessage('Error loading cards: ' + error.message);
         } finally {
@@ -78,13 +76,11 @@ const CardWallet = () => {
 
     const handleUpdate = async (cardId) => {
         try {
-            const cardToUpdate = savedCards.find(card => card.id === cardId);
-            
             const response = await fetch(`http://localhost:8080/saved-cards/${cardId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    ...cardToUpdate,
+                    userId: parseInt(userId),
                     name: editFormData.name,
                     email: editFormData.email,
                     phoneNumber: editFormData.phoneNumber,

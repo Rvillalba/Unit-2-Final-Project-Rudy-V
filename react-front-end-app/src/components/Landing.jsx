@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
+import Button from "./Button";
 import FormComponent from "./Form";
 
 const Landing = () => {
@@ -18,20 +19,23 @@ const Landing = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const userId = crypto.randomUUID();
-
-        const response = await fetch('/users', {
+        const response = await fetch('http://localhost:8080/users/add', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify({
-                id: userId,
                 name: formData.name,
                 email: formData.email
             })
         });
 
-        localStorage.setItem('userId', userId);
-        localStorage.setItem('userName', formData.name);
+        if (!response.ok) throw new Error('Failed to create user.');
+
+        const newUser = await response.json();
+
+        localStorage.setItem('userId', newUser.id);
+        localStorage.setItem('userName', newUser.name)
+
+        window.dispatchEvent(new Event('userCreated'))
 
         navigate('/create');
     }

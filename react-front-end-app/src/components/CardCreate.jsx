@@ -1,6 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
 import CardPreview from "./CardPreview";
-import Button from "./Button";
 import eventHandler from "./eventHandler";
 import FormComponent from "./Form";
 import {useState, useEffect } from "react";
@@ -37,7 +36,7 @@ const CardCreate = () => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    cardId: userId,
+                    userId: parseInt(userId),
                     name: formData.name,
                     phoneNumber: formData.phone,
                     email: formData.email,
@@ -47,6 +46,8 @@ const CardCreate = () => {
             });
 
             if (!response.ok) throw new Error('Failed to save card');
+
+            const savedCard = await response.json()
 
             setSavedMessage ('Card saved successfully!');
             setTimeout(() => setSavedMessage(''), 3000);
@@ -72,17 +73,10 @@ const CardCreate = () => {
                 formData={formData}
                 handleChange={handleChange}
                 onSubmit={handleSubmit}
-                submitLabel="Create Card"
+                submitLabel="Save Card"
                 showClearButton={true}
                 onClear={clearInput}
-                isDisabled={emptyFields}
-                />
-
-                <Button
-                    id="saved-card-btn"
-                    label="Save Card"
-                    onClick={handleSavedCard}
-                    disabled={!userId || emptyFields}
+                isDisabled={!userId || emptyFields}
                 />
 
                 {!userId && (

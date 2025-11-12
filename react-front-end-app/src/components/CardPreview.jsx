@@ -7,6 +7,7 @@ const CardPreview = ({ data, isDisabled }) => {
     const elementRef = useRef(null);
     const htmlToCanvas = () => {
       if(!elementRef.current) return;
+      
       /*this bit of code utilizes html2canvas for the card download*/
       html2canvas(elementRef.current).then(canvas => {
         const dataUrl = canvas.toDataURL('image/png');
