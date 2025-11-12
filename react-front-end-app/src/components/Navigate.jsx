@@ -17,10 +17,12 @@ const Navigate = () => {
         
         /* This checks local storage for user */
         window.addEventListener('storage', checkUser);
+        window.addEventListener('userCreated', checkUser);
 
         return () => {
             clearInterval(interval);
             window.removeEventListener('storage', checkUser);
+            window.removeEventListener('userCreated', checkUser);
         };
     }, []);
 

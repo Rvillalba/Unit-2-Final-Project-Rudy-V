@@ -10,7 +10,7 @@ const CardCreate = () => {
     /*This part of the code uses the eventHandler component*/
     const navigate = useNavigate();
     const [userId, setUserId] = useState(null);
-    const [saveMessage, setSavedMessage] = useState('');
+    const [saveMessage, setSaveMessage] = useState('');
 
     /*Checks for user in storage*/
     useEffect(() => {
@@ -18,16 +18,20 @@ const CardCreate = () => {
         if (existingUserId) {
             setUserId(existingUserId);
         }
-    })
-    const {formData, handleSubmit, handleChange, clearInput} = eventHandler();
+    }, []);
+
+    const {formData, handleChange, clearInput} = eventHandler();
+
     /*This code checks the values of the input fields. This part is important
     to disable the download button if there is a blank field*/
     const emptyFields = Object.values(formData).every(value => value.trim() === "");
 
     /*Saves card to database*/
-    const handleSavedCard = async () => {
+    const handleSaveCard = async (e) => {
+        e.preventDefault();
+
         if (!userId) {
-            setSavedMessage('Please create a user account first');
+            setSaveMessage('Please create a user account first');
             return;
         }
 
@@ -49,12 +53,16 @@ const CardCreate = () => {
 
             const savedCard = await response.json()
 
-            setSavedMessage ('Card saved successfully!');
-            setTimeout(() => setSavedMessage(''), 3000);
+            setSaveMessage('Card saved successfully!');
+            setTimeout(() => {
+                setSavedMessage('');
+                clearInput();
+            }, 2000);
         } catch (error) {
-            setSavedMessage('Error saving card: ' + error.message);
+            console.error('Save error:', error);
+            setSaveMessage('Error saving card: ' + error.message);
         }
-    }
+    };  
     
     const cardFields = [
         {name: "name", type: "text", placeholder: "Name", required: true},
@@ -72,12 +80,19 @@ const CardCreate = () => {
                 fields={cardFields}
                 formData={formData}
                 handleChange={handleChange}
-                onSubmit={handleSubmit}
+                onSubmit={handleSaveCard}
                 submitLabel="Save Card"
                 showClearButton={true}
                 onClear={clearInput}
                 isDisabled={!userId || emptyFields}
                 />
+
+                    {saveMessage && (
+                    <p>
+                        {saveMessage}
+                    </p> 
+                    )}   
+
 
                 {!userId && (
                     <p>Please create a user account to save cards</p>

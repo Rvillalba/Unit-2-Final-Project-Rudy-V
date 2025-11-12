@@ -23,11 +23,11 @@ const CardWallet = () => {
 
     const fetchSavedCards = async (userId) => {
         try {
-            const response = await fetch('http://localhost:8080/users/${userId}/cards');
+            const response = await fetch(`http://localhost:8080/users/${userId}/cards`);
             if (!response.ok) throw new Error('Failed to fetch cards');
             
             const userCards = await response.json();
-            setSavedCards(usedCards);
+            setSavedCards(userCards);
 
         } catch (error) {
             setMessage('Error loading cards: ' + error.message);
