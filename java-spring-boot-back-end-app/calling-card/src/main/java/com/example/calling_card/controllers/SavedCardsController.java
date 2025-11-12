@@ -44,7 +44,7 @@ public class SavedCardsController {
         Users user = usersRepository.findById(cardData.getUserId()).orElse(null);
         if (user != null) {
             SavedCards newCard = new SavedCards(cardData.getName(), cardData.getEmail(),
-                    cardData.getPhoneNumber(), user);
+                    cardData.getPhoneNumber(), cardData.getAddress1(), cardData.getAddress2(), user);
             savedCardsRepository.save(newCard);
             return new ResponseEntity<>(newCard, HttpStatus.CREATED);
         } else {
@@ -60,6 +60,8 @@ public class SavedCardsController {
             existingCard.setName(cardData.getName());
             existingCard.setEmail(cardData.getEmail());
             existingCard.setPhoneNumber(cardData.getPhoneNumber());
+            existingCard.setAddress1(existingCard.getAddress1());
+            existingCard.setAddress2(existingCard.getAddress2());
             savedCardsRepository.save(existingCard);
             return new ResponseEntity<>(existingCard, HttpStatus.OK);
         } else {
