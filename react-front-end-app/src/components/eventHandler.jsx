@@ -9,6 +9,7 @@ const eventHandler = () => {
         address2:"",
     });
 
+    /*Handles the submit*/
     const handleSubmit = (e) => {
         e.preventDefault();
     } 

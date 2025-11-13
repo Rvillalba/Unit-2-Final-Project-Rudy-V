@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "./Button";
 
+/*Resuable Form component for user create and card create or edit*/
 const FormComponent = ({
     fields,
     formData,
@@ -17,6 +18,8 @@ const FormComponent = ({
             {title && <h1 id="create-title">{title}</h1>}
             <form id="form" onSubmit={onSubmit}>
                 {fields.map((field) => (
+
+                    /*This is a React fragment which keeps the code from creating another DOM element*/
                     <React.Fragment key={field.name}>
                         <input
                             id={field.name}
@@ -31,6 +34,7 @@ const FormComponent = ({
                     </React.Fragment>
                 ))}
 
+                {/*These are submit and clear buttons from the Button Component*/}
                 <Button
                     id="submit-btn"
                     label={submitLabel}

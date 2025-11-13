@@ -23,12 +23,13 @@ public class SavedCardsController {
     @Autowired
     UsersRepository usersRepository;
 
+    // GetMapping to retrieve all saved cards
     @GetMapping("")
     public ResponseEntity<?> getAllCards() {
         List<SavedCards> allCards = savedCardsRepository.findAll();
         return new ResponseEntity<>(allCards, HttpStatus.OK);
     }
-
+    // GetMapping to retrieve a saved card by its ID
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getCardById(@PathVariable int id) {
         SavedCards card = savedCardsRepository.findById(id).orElse(null);
@@ -39,6 +40,7 @@ public class SavedCardsController {
         }
     }
 
+    // PostMapping to add a new saved card
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> addCard(@RequestBody SavedCardDTO cardData) {
         Users user = usersRepository.findById(cardData.getUserId()).orElse(null);
@@ -53,6 +55,7 @@ public class SavedCardsController {
         }
     }
 
+    // PutMapping to update an existing saved card
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateCard(@PathVariable int id, @RequestBody SavedCardDTO cardData) {
         SavedCards existingCard = savedCardsRepository.findById(id).orElse(null);
@@ -68,7 +71,7 @@ public class SavedCardsController {
             return new ResponseEntity<>("Card not found", HttpStatus.NOT_FOUND);
         }
     }
-
+    // DeleteMapping to delete a saved card by its ID
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<?> deleteCard(@PathVariable int id) {
         SavedCards existingCard = savedCardsRepository.findById(id).orElse(null);

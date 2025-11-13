@@ -17,6 +17,7 @@ public class Users {
     private String name;
     private String email;
 
+    // One-to-Many relationship with SavedCards
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
     private List<SavedCards> savedCards;
@@ -57,6 +58,7 @@ public class Users {
     public List<SavedCards> getSavedCards() {
         return savedCards;
     }
+
 
     @Override
     public boolean equals(Object o) {

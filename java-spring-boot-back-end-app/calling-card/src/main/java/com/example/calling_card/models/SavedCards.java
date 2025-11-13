@@ -11,6 +11,7 @@ import java.util.Objects;
 @Entity
 public class SavedCards {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -20,6 +21,7 @@ public class SavedCards {
     private String address1;
     private String address2;
 
+    // Many-to-One relationship with Users
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonBackReference
@@ -28,6 +30,7 @@ public class SavedCards {
     public SavedCards() {
     }
 
+    // Constructor without id
     public SavedCards(String name, String email, String phoneNumber, String address1, String address2, Users user) {
         this.name = name;
         this.email = email;
@@ -87,11 +90,13 @@ public class SavedCards {
         this.user = user;
     }
 
+    // toString method
     @Override
     public String toString() {
         return name + " (" + email + ")";
     }
 
+    // equals and hashCode based on id
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
