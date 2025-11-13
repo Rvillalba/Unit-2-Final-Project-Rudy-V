@@ -17,7 +17,7 @@ const CardPreview = ({ data, isDisabled }) => {
         link.click();
       });
      };
-
+      {/*This uses React hook to pull information and display current card*/}
     return(
       <div>
         <div 

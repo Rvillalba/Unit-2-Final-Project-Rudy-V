@@ -11,6 +11,7 @@ const CardWallet = () => {
     const [editFormData, setEditFormData] = useState({});
     const cardRefs = useRef({});
 
+    /*This React hook is used to check local storage for a created user*/
     useEffect(() => {
         const existingUserId = localStorage.getItem('userId');
         if (existingUserId) {
@@ -21,6 +22,7 @@ const CardWallet = () => {
         }
     }, []);
 
+    /*This variable and try/catch block looks for the user id to pull the appropriate cards (GET request)*/
     const fetchSavedCards = async (userId) => {
         try {
             const response = await fetch(`http://localhost:8080/users/${userId}/cards`);
@@ -36,6 +38,7 @@ const CardWallet = () => {
         }
     };
 
+    /*This variable and try/catch block is used for the DELETE request*/
     const handleDelete = async (cardId) => {
         if (!window.confirm('Are you sure you want to delete this card?')) {
             return;
@@ -55,7 +58,7 @@ const CardWallet = () => {
             setMessage('Error deleting card: ' + error.message);
         }
     };
-
+    /*This event handler is used for the Edit button*/
     const handleEditClick = (card) => {
         setEditingCard(card.id);
         setEditFormData({
@@ -74,6 +77,7 @@ const CardWallet = () => {
         });
     };
 
+    /*This variable and try/catch block is for the PUT Request */
     const handleUpdate = async (cardId) => {
         try {
             const response = await fetch(`http://localhost:8080/saved-cards/${cardId}`, {
@@ -103,6 +107,7 @@ const CardWallet = () => {
         }
     };
 
+   /*This React hook and code is used for the download function for the cards*/
     const handleDownload = (cardId) => {
         const elementRef = cardRefs.current[cardId];
         if (!elementRef) return;
@@ -120,25 +125,23 @@ const CardWallet = () => {
         return <div>Loading...</div>;
     }
 
+    /*This is the default state if the user does not create an account and navigates to the wallet page*/
     if (!userId) {
         return (
-            <div style={{ padding: '20px', textAlign: 'center' }}>
+            <div className="card-wallet-no-account">
                 <h2>No User Account</h2>
                 <p>Please create a user account first to view saved cards.</p>
             </div>
         );
     }
 
+    /*This creates the containers for the saved cards and has a default message if no card has been saved */
     return (
-        <div style={{ padding: '20px' }}>
+        <div className="card-wallet-container">
             <h1>My Saved Cards</h1>
             
             {message && (
-                <p style={{ 
-                    color: message.includes('Error') ? 'red' : 'green',
-                    fontWeight: 'bold',
-                    marginBottom: '20px'
-                }}>
+                <p className={`card-wallet-message ${message.includes('Error') ? 'error' : 'success'}`}>
                     {message}
                 </p>
             )}
@@ -146,19 +149,12 @@ const CardWallet = () => {
             {savedCards.length === 0 ? (
                 <p>No saved cards yet. Create and save your first card!</p>
             ) : (
-                <div style={{ display: 'grid', gap: '20px' }}>
+                <div className="card-wallet-grid">
                     {savedCards.map((card) => (
-                        <div 
-                            key={card.id} 
-                            style={{ 
-                                border: '1px solid #ccc', 
-                                padding: '20px', 
-                                borderRadius: '8px',
-                                backgroundColor: '#f9f9f9'
-                            }}
-                        >
+                        <div key={card.id} className="card-wallet-item">
                             {editingCard === card.id ? (
-                                <div>
+                                /*This div is for the edit fields*/
+                                <div className="card-wallet-edit-form">
                                     <h3>Edit Card</h3>
                                     <input
                                         type="text"
@@ -166,7 +162,6 @@ const CardWallet = () => {
                                         value={editFormData.name}
                                         onChange={handleEditChange}
                                         placeholder="Name"
-                                        style={{ width: '100%', marginBottom: '10px', padding: '8px' }}
                                     />
                                     <input
                                         type="email"
@@ -174,7 +169,6 @@ const CardWallet = () => {
                                         value={editFormData.email}
                                         onChange={handleEditChange}
                                         placeholder="Email"
-                                        style={{ width: '100%', marginBottom: '10px', padding: '8px' }}
                                     />
                                     <input
                                         type="tel"
@@ -182,7 +176,6 @@ const CardWallet = () => {
                                         value={editFormData.phoneNumber}
                                         onChange={handleEditChange}
                                         placeholder="Phone"
-                                        style={{ width: '100%', marginBottom: '10px', padding: '8px' }}
                                     />
                                     <input
                                         type="text"
@@ -190,7 +183,6 @@ const CardWallet = () => {
                                         value={editFormData.address1}
                                         onChange={handleEditChange}
                                         placeholder="Address Line 1"
-                                        style={{ width: '100%', marginBottom: '10px', padding: '8px' }}
                                     />
                                     <input
                                         type="text"
@@ -198,22 +190,24 @@ const CardWallet = () => {
                                         value={editFormData.address2}
                                         onChange={handleEditChange}
                                         placeholder="Address Line 2"
-                                        style={{ width: '100%', marginBottom: '10px', padding: '8px' }}
                                     />
-                                    <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+                                    {/*This is the resuable Button used for the save button*/}
+                                    <div className="card-wallet-edit-buttons">
                                         <Button
                                             label="Save"
                                             onClick={() => handleUpdate(card.id)}
                                         />
+                                        {/*This is the resuable Button used to cancel changes*/}
                                         <Button
                                             label="Cancel"
                                             onClick={() => setEditingCard(null)}
                                         />
                                     </div>
-                                </div>
-                            ) : (
-                                <div>
-                                    {/* Card Preview - Styled like CardPreview component */}
+                                    {/*This is a ternary operator to render a div accordingly*/}
+                                </div>) : (
+                                    
+                                    <div>
+                                    
                                     <div 
                                         id="business-card"
                                         ref={(el) => cardRefs.current[card.id] = el}
@@ -225,7 +219,8 @@ const CardWallet = () => {
                                         <p>{card.address2}</p>
                                     </div>
                                     
-                                    <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
+                                    <div className="card-wallet-button-group">
+                                        {/*These are the edit, delete, and download button from the Button component*/}
                                         <Button
                                             label="Edit"
                                             onClick={() => handleEditClick(card)}
@@ -247,6 +242,6 @@ const CardWallet = () => {
             )}
         </div>
     );
-};
+}
 
 export default CardWallet;

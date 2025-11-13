@@ -11,6 +11,7 @@ import java.util.List;
 @Configuration
 public class CorsConfig {
 
+    // Allow CORS for localhost:5174
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

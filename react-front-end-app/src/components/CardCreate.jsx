@@ -26,15 +26,17 @@ const CardCreate = () => {
     to disable the download button if there is a blank field*/
     const emptyFields = Object.values(formData).every(value => value.trim() === "");
 
-    /*Saves card to database*/
+    /*This event handler is to save card to database*/
     const handleSaveCard = async (e) => {
         e.preventDefault();
 
+        /*This message displays if the user skips the account creation on landing*/
         if (!userId) {
             setSaveMessage('Please create a user account first');
             return;
         }
 
+        /*Try/catch block to handle POST request with error*/
         try {
             const response = await fetch ('http://localhost:8080/saved-cards/add', {
                 method: 'POST',
@@ -64,6 +66,7 @@ const CardCreate = () => {
         }
     };  
     
+    /*Fields for the card a user creates*/
     const cardFields = [
         {name: "name", type: "text", placeholder: "Name", required: true},
         { name: "phone", type: "text", placeholder: "Phone Number", required: false },
@@ -75,6 +78,7 @@ const CardCreate = () => {
     return(
         <div>
             <div id="create-form">
+                {/*Reusable form component used for create page*/}
                 <FormComponent
                 title="Enter Information Below"
                 fields={cardFields}
@@ -86,14 +90,14 @@ const CardCreate = () => {
                 onClear={clearInput}
                 isDisabled={!userId || emptyFields}
                 />
-
+                    {/*Message that displays when saving card*/}
                     {saveMessage && (
                     <p>
                         {saveMessage}
                     </p> 
                     )}   
 
-
+                {/*Default message if there is no user created*/}
                 {!userId && (
                     <p>Please create a user account to save cards</p>
                 )}

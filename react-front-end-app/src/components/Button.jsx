@@ -1,4 +1,4 @@
-/*Resuable button*/
+/*Resuable button. These cover all the parameters each button should need*/
 const Button = ({id, label, onClick, disabled = false, type = "button"}) => {
     return (
         <button id={id} 

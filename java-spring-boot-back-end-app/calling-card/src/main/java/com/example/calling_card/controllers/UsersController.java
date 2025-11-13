@@ -24,12 +24,13 @@ public class UsersController {
     @Autowired
     private UsersRepository usersRepository;
 
+    // Get all users
     @GetMapping
     public ResponseEntity<?> getAllUsers() {
         List<Users> allUsers = usersRepository.findAll();
         return new ResponseEntity<>(allUsers, HttpStatus.OK);
     }
-
+    // Get user by ID
     @GetMapping (value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getUserById(@PathVariable int id) {
         Users user = usersRepository.findById(id).orElse(null);
@@ -40,6 +41,7 @@ public class UsersController {
         }
     }
 
+    // Get saved cards by user ID
     @GetMapping(value = "/{id}/cards", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getSavedCardsByUserId(@PathVariable int id) {
         Users user = usersRepository.findById(id).orElse(null);
@@ -50,6 +52,7 @@ public class UsersController {
         }
     }
 
+    // Add new user
     @PostMapping (value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> addUser(@Valid @RequestBody UserDTO userData) {
         Users user = new Users(userData.getName(), userData.getEmail());
@@ -57,6 +60,7 @@ public class UsersController {
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
+    // Update existing user
     @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateUser(@PathVariable int id, @Valid @RequestBody UserDTO userData) {
         Users existingUser = usersRepository.findById(id).orElse(null);
@@ -70,6 +74,7 @@ public class UsersController {
         }
     }
 
+    // Delete user
     @DeleteMapping (value = "/delete/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable int id) {
         Users existingUser = usersRepository.findById(id).orElse(null);

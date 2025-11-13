@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 public class SavedCardDTO {
 
+    // User ID is required
     @NotNull(message = "User ID is required")
     private Integer userId;
 
@@ -17,6 +18,7 @@ public class SavedCardDTO {
 
     }
 
+    // Constructor with all fields
     public SavedCardDTO(Integer userId, String name, String email, String phoneNumber, String address1, String address2) {
         this.userId = userId;
         this.name = name;

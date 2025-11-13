@@ -12,7 +12,7 @@ const Navigate = () => {
 
         checkUser();
         
-        /*This code checks perid for user. Need it in case there are multiple tabs */
+        /*This code checks for user at the set time constantly. Need it in case there are multiple tabs */
         const interval = setInterval(checkUser, 1000);
         
         /* This checks local storage for user */
@@ -36,6 +36,8 @@ const Navigate = () => {
                     <li><Link to="/">Home</Link></li>
                     <li><Link to="/about">About</Link></li>
                     <li><Link to="/create">Create</Link></li>
+                    
+                    {/*This checks to see if there is a user created. If yes, it shows the Wallet link in the nav*/}
                     {hasUser && (
                         <li><Link to="/wallet">My Wallet</Link></li>
                     )}
